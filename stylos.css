@@ -1,0 +1,43 @@
+
+#header{
+display: flex;
+justify-content: center;
+}
+
+#Agenda{
+    display: flex;
+    justify-content: center;
+}
+body {
+ 
+  background: #f2f4f7;
+  margin: 0;
+  padding: 30px 15px;
+  color: #2b2f38;
+}
+
+#contenedor {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #e95050;
+  border-radius: 3px;
+  padding: 30px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+#Agenda form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: flex-end;
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+}
