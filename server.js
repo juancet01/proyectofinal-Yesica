@@ -1,17 +1,15 @@
-// server.js
-// Servidor con Node.js "puro" (módulo http, sin Express)
-// conectado a una base de datos MySQL real.
+
 
 const http = require('http');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const mysql = require('mysql2/promise'); // versión con promesas, más cómoda con async/await
+const mysql = require('mysql2/promise'); 
 
 const PORT = 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
-// --- Datos de conexión a MySQL ---
+// Datos de conexión a mysql
 const dbConfig = {
   host: 'localhost',
   user: 'root',
@@ -19,11 +17,10 @@ const dbConfig = {
   database: 'agendacontactos'
 };
 
-// Creamos un "pool" de conexiones: en vez de abrir/cerrar una conexión
-// por cada petición, se reutilizan varias conexiones ya abiertas (más eficiente).
+
 const pool = mysql.createPool(dbConfig);
 
-// Junta el "body" de una petición POST/PUT (llega en pedacitos)
+
 function leerCuerpo(req) {
   return new Promise((resolve, reject) => {
     let data = '';
@@ -72,23 +69,22 @@ const server = http.createServer(async (req, res) => {
 
   if (pathname.startsWith('/api/contactos')) {
     const partes = pathname.split('/').filter(Boolean);
-    const id = partes[2]; // undefined si es /api/contactos, o el id si es /api/contactos/5
+    const id = partes[2]; 
 
     try {
-      // GET /api/contactos -> listar todos
+  
       if (metodo === 'GET' && !id) {
         const [filas] = await pool.query('SELECT * FROM contactos ORDER BY id DESC');
         return enviarJSON(res, 200, filas);
       }
 
-      // GET /api/contactos/:id -> obtener uno
+      
       if (metodo === 'GET' && id) {
         const [filas] = await pool.query('SELECT * FROM contactos WHERE id = ?', [id]);
         if (filas.length === 0) return enviarJSON(res, 404, { error: 'Contacto no encontrado' });
         return enviarJSON(res, 200, filas[0]);
       }
 
-      // POST /api/contactos -> crear
       if (metodo === 'POST' && !id) {
         const body = await leerCuerpo(req);
         const { nombre, telefono, gmail } = body;
@@ -105,7 +101,6 @@ const server = http.createServer(async (req, res) => {
         return enviarJSON(res, 201, { id: resultado.insertId, nombre, telefono, gmail });
       }
 
-      // PUT /api/contactos/:id -> editar
       if (metodo === 'PUT' && id) {
         const body = await leerCuerpo(req);
         const { nombre, telefono, gmail } = body;
@@ -122,7 +117,7 @@ const server = http.createServer(async (req, res) => {
         return enviarJSON(res, 200, { id, nombre, telefono, gmail });
       }
 
-      // DELETE /api/contactos/:id -> eliminar
+      
       if (metodo === 'DELETE' && id) {
         const [resultado] = await pool.query('DELETE FROM contactos WHERE id = ?', [id]);
 

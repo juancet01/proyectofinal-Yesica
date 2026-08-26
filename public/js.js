@@ -1,5 +1,3 @@
-// js.js
-// Conecta el formulario con el servidor (server.js), que a su vez habla con MySQL.
 
 var API_URL = '/api/contactos';
 
@@ -10,22 +8,32 @@ var inputGmail = document.getElementById('gmail');
 var btnAgregar = document.getElementById('agregar');
 var btnCancelar = document.getElementById('cancelar');
 var listaContactos = document.getElementById('listaContactos');
+var contador = document.getElementById('contador');
+var mensajeExito= document.getElementById('mensajeExito');
+var mensajevacio = document.getElementById('mensajevacio');
+var inputBuscar = document.getElementById('inputBuscar');
+var todoslosContactos=[];
+var idEditando = null; 
 
-var idEditando = null; // null = creando uno nuevo, número = editando ese id
-
-// --- Traer y mostrar todos los contactos guardados en MySQL ---
 function cargarContactos() {
   fetch(API_URL)
     .then(function (respuesta) {
       return respuesta.json();
     })
     .then(function (contactos) {
+      todoslosContactos = contactos;
       dibujarContactos(contactos);
     });
 }
 
 function dibujarContactos(contactos) {
   listaContactos.innerHTML = '';
+  contador.textContent ='tenes ' + contactos.length + ' contactos';
+  if (contactos.length ===0){
+    mensajevacio.classList.remove('oculto');
+  }else{
+    mensajevacio.classList.add('oculto');
+  }
 
   for (var i = 0; i < contactos.length; i++) {
     var contacto = contactos[i];
@@ -46,10 +54,17 @@ function dibujarContactos(contactos) {
   }
 }
 
-// Cargar los contactos apenas se abre la página
+function mostrarMensajeExito(texto) {
+  mensajeExito.textContent = texto;
+  mensajeExito.classList.remove('oculto');
+  setTimeout(function () {
+    mensajeExito.classList.add('oculto');
+  }, 2000);
+}
+
 document.addEventListener('DOMContentLoaded', cargarContactos);
 
-// --- Crear o editar (según idEditando) ---
+//crear o editar (idEditand
 form.addEventListener('submit', function (evento) {
   evento.preventDefault();
 
@@ -94,7 +109,6 @@ form.addEventListener('submit', function (evento) {
   }
 });
 
-// --- Preparar el formulario para editar un contacto ---
 function editarContacto(id) {
   fetch(API_URL + '/' + id)
     .then(function (respuesta) {
@@ -110,7 +124,7 @@ function editarContacto(id) {
     });
 }
 
-// --- Eliminar un contacto ---
+
 function eliminarContacto(id) {
   var confirmar = confirm('¿Seguro que querés eliminar este contacto?');
   if (!confirmar) return;
@@ -121,9 +135,16 @@ function eliminarContacto(id) {
     });
 }
 
-// --- Botón Cancelar ---
+
 btnCancelar.addEventListener('click', function () {
   idEditando = null;
   btnAgregar.textContent = 'Agregar Contacto';
   form.reset();
+});
+inputBuscar.addEventListener('input', function () {
+  var texto = inputBuscar.value.trim().toLowerCase();
+  var  filtrados = todoslosContactos.filter(function (contacto) {
+    return contacto.nombre.toLowerCase().includes(texto);
+  });
+  dibujarContactos(filtrados);
 });

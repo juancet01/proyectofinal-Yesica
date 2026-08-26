@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylos.css">
-    <title>Document</title>
+    <title>CRUD</title>
 </head>
 <body>
     <div id="contenedor">
-
 
         <div id="header">
            <h1>Crud de Agenda de contactos</h1>
@@ -17,7 +16,7 @@
      <div class="main">
 
         <div id="Agenda">
-            
+            <p id="mensajeExito" class="oculto">contacto agregado correctamente</p>
              <form action="">
               
 
@@ -28,7 +27,7 @@
                     </div>
 
                      <div class="campo">
-                        <label for="telefono">Dni</label>
+                        <label for="telefono">Teléfono</label>
                         <input type="text" id="telefono">
                     </div>
 
@@ -45,7 +44,10 @@
                 </form>
 
         </div>
-
+        <input type="text" id="inputBuscar" placeholder="Buscar contacto por nombre">
+            <p id="contador"></p>
+            <p id="mensajevacio" class="oculto">No hay contactos para mostrar.</p>
+            <p id="cargando" class="oculto">Cargando contactos</p>
             <div id="listaContactos"></div>
     </div>
 

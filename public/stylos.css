@@ -19,7 +19,7 @@ body {
 #contenedor {
   max-width: 700px;
   margin: 0 auto;
-  background: #0f0f0f;
+  background: #413636;
   border-radius: 3px;
   padding: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -40,4 +40,26 @@ body {
   flex-direction: column;
   flex: 1;
   min-width: 150px;
+}
+#contador {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+#mensajeVacio {
+ text-align: center;
+ padding: 30px 0;
+  color: #6b7280;
+}
+.oculto {
+  display: none;
+}
+#inputBuscar{
+width: 160px;
+padding: 6px 10px;
+
+
+
+
+
 }
