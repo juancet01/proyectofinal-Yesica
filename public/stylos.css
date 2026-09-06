@@ -7,6 +7,7 @@ justify-content: center;
 #Agenda{
     display: flex;
     justify-content: center;
+   
 }
 body {
  
@@ -23,6 +24,7 @@ body {
   border-radius: 3px;
   padding: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 15px;
 }
 
 #Agenda form {
@@ -40,12 +42,14 @@ body {
   flex-direction: column;
   flex: 1;
   min-width: 150px;
+  
 }
 #contador {
   font-size: 12px;
-  color: #6b7280;
+  color: #fa2306;
   margin-bottom: 5px;
 }
+
 #mensajeVacio {
  text-align: center;
  padding: 30px 0;
@@ -58,8 +62,42 @@ body {
 width: 160px;
 padding: 6px 10px;
 
-
-
-
-
+}
+button {
+  background: #973c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 2px;
+ 
+}
+#inputBuscar{
+  border-radius: 4px;
+}
+.campo input {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 2px;
+}
+#lista-contactos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+}
+.contacto-nombre {
+  font-weight: bold;
+  color: #d3d4d4;
+}
+.contacto-card{
+  border-color: rgb(227, 233, 227);
+  border-width: 2px;
+  border-style: solid;
+  display: flex;
+  justify-content: space-between;
+}
+#cosas{
+  
+  display: flex;
+  justify-content: space-between;
 }
