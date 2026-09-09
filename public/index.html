@@ -32,9 +32,15 @@
                     </div>
 
                     <div class="campo">
-                        <label for="gmail">Gmail</label>
+                        <label for="gmail">Contacto</label>
                         <input type="text" id="gmail">
                     </div>
+
+                    <div class="campo">
+                        <label for="gmail">Referencia</label>
+                        <input type="text" id="referencia" placeholder="EJ: Vecino, Amigo....">
+                    </div>
+
 
                     <div id="botones">
                         <button type="submit" id="agregar">Agregar Contacto</button>
@@ -47,7 +53,17 @@
         <input type="text" id="inputBuscar" placeholder="Buscar contacto por nombre"> 
             
             <p id="contador"></p>
-            <p id="cosas">NOMBRE  TELEFONO  GMAIL</p>
+
+
+            <ul id="cosas">
+            <li>NOMBRE</li>
+            <li>TELEFONO</li>
+            <li>contacto</li>   
+            <li>Referencia</li>
+            </ul>
+
+
+
             <p id="mensajevacio" class="oculto">No hay contactos para mostrar.</p>
             <p id="cargando" class="oculto">Cargando contactos</p>
             <div id="listaContactos"></div>
