@@ -109,11 +109,16 @@ button {
 #cosas,
 .contacto-card {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr auto; /* antes tenía 3 "1fr", ahora 4 */
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
   align-items: center;
   gap: 10px;
   padding: 10px 15px;
   border-color: rgb(227, 233, 227);
   border-width: 2px;
   border-style: solid;
+}
+#filtroReferencia{
+  padding: 6px 10px ;
+  border-radius: 3px;
+  margin-left: 8px;
 }

@@ -1,6 +1,7 @@
 
 const API_URL = '/api/contactos';
-
+const inputReferencia = document.getElementById('referencia');
+const filtroReferencia= document.getElementById('filtroReferencia');
 const form = document.querySelector('#Agenda form');
 const inputNombre = document.getElementById('nombre');
 const inputTelefono = document.getElementById('telefono');
@@ -19,12 +20,27 @@ let idEditando = null;
 
 // funciones
 
+function actualizarFiltroReferencias(contactos) {
+  const referenciasUnicas = [...new Set(
+    contactos.map(c => c.referencia).filter(r => r)
+  )];
+
+  filtroReferencia.innerHTML = '<option value="">Todas las referencias</option>';
+
+  referenciasUnicas.forEach(referencia => {
+    const opcion = document.createElement('option');
+    opcion.value = referencia;
+    opcion.textContent = referencia;
+    filtroReferencia.appendChild(opcion);
+  });
+}
 
 function cargarContactos() {
   fetch(API_URL)
     .then(respuesta => respuesta.json())
     .then(contactos => {
-      console.log('Contactos cargados:', contactos); // <-- Agregado para depurar
+      console.log('Contactos cargados:', contactos); 
+      actualizarFiltroReferencias(contactos);
       todoslosContactos = contactos;
       dibujarContactos(contactos);
     })
@@ -49,6 +65,7 @@ function dibujarContactos(contactos) {
       <p class="contacto-nombre">${contacto.nombre}</p>
       <p class="contacto-telefono">${contacto.telefono}</p>
       <p class="contacto-email">${contacto.gmail || ''}</p>
+       <p class="contacto-referencia">${contacto.referencia || ''}</p>
       <div class="contacto-acciones">
         <button onclick="editarContacto(${contacto.id})">Editar</button>
         <button onclick="eliminarContacto(${contacto.id})">Eliminar</button>
@@ -75,6 +92,7 @@ function editarContacto(id) {
       inputNombre.value = contacto.nombre;
       inputTelefono.value = contacto.telefono;
       inputGmail.value = contacto.gmail;
+      inputReferencia.value = contacto.referencia || ''; 
       idEditando = id;
       btnAgregar.textContent = 'Guardar cambios';
     })
@@ -107,7 +125,7 @@ form.addEventListener('submit', function (evento) {
     return;
   }
 
-  const datosContacto = { nombre, telefono, gmail };
+const datosContacto = { nombre, telefono, gmail, referencia: inputReferencia.value.trim() };
   console.log('Enviando datos:', datosContacto); // 
 
   if (idEditando === null) {
@@ -161,14 +179,21 @@ btnCancelar.addEventListener('click', function () {
   form.reset();
 });
 
-inputBuscar.addEventListener('input', function () {
+function aplicarFiltros() {
   const texto = inputBuscar.value.trim().toLowerCase();
-  const filtrados = todoslosContactos.filter(contacto =>
-    contacto.nombre.toLowerCase().includes(texto)
-  );
-  dibujarContactos(filtrados);
-});
+  const referenciaElegida = filtroReferencia.value;
 
+  const filtrados = todoslosContactos.filter(contacto => {
+    const coincideNombre = contacto.nombre.toLowerCase().includes(texto);
+    const coincideReferencia = referenciaElegida === '' || contacto.referencia === referenciaElegida;
+    return coincideNombre && coincideReferencia;
+  });
+
+  dibujarContactos(filtrados);
+}
+
+inputBuscar.addEventListener('input', aplicarFiltros);
+filtroReferencia.addEventListener('change', aplicarFiltros);
 
 // INICIALIZAR
 document.addEventListener('DOMContentLoaded', cargarContactos);

@@ -15,7 +15,6 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-// Middlewares
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -45,33 +44,7 @@ app.get('/api/contactos/:id', async (req, res) => {
 });
 
 //  crear contacto
-app.post('/api/contactos', async (req, res) => {
-  try {
-    const { nombre, telefono, gmail } = req.body;
 
-    if (!nombre || !telefono) {
-      return res.status(400).json({ error: 'Nombre y teléfono son obligatorios' });
-    }
-
-    const [resultado] = await pool.query(
-      'INSERT INTO contactos (nombre, telefono, gmail) VALUES (?, ?, ?)',
-      [nombre, telefono, gmail || '']
-    );
-
-    res.status(201).json({
-      id: resultado.insertId,
-      nombre,
-      telefono,
-      gmail: gmail || ''
-    });
-  } catch (error) {
-    console.error('Error en POST /api/contactos:', error);
-    console.error(error);
-    res.status(500).json({ error: 'Error al crear el contacto' });
-  }
-});
-
-//post Referencia
 app.post('/api/contactos', async (req, res) => {
   try {
     const { nombre, telefono, gmail, referencia } = req.body; // agregado
@@ -90,7 +63,7 @@ app.post('/api/contactos', async (req, res) => {
       nombre,
       telefono,
       gmail: gmail || '',
-      referencia: referencia || '' // agregado
+      referencia: referencia || ''
     });
   } catch (error) {
     console.error('Error en POST /api/contactos:', error);
@@ -99,32 +72,8 @@ app.post('/api/contactos', async (req, res) => {
 });
 
 //  actualizar contacto
-app.put('/api/contactos/:id', async (req, res) => {
-  try {
-    const { nombre, telefono, gmail } = req.body;
 
-    const [resultado] = await pool.query(
-      'UPDATE contactos SET nombre = ?, telefono = ?, gmail = ? WHERE id = ?',
-      [nombre, telefono, gmail, req.params.id]
-    );
 
-    if (resultado.affectedRows === 0) {
-      return res.status(404).json({ error: 'Contacto no encontrado' });
-    }
-
-    res.json({
-      id: req.params.id,
-      nombre,
-      telefono,
-      gmail
-    });
-  } catch (error) {
-    console.error('Error en PUT /api/contactos/:id:', error);
-    res.status(500).json({ error: 'Error al actualizar el contacto' });
-  }
-});
-
-//actualizar referencia
 app.put('/api/contactos/:id', async (req, res) => {
   try {
     const { nombre, telefono, gmail, referencia } = req.body; // agregado
