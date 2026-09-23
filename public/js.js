@@ -1,7 +1,8 @@
 
 const API_URL = '/api/contactos';
 const inputReferencia = document.getElementById('referencia');
-const filtroReferencia= document.getElementById('filtroReferencia');
+const chkNombre = document.getElementById('chkNombre');
+const chkReferencia = document.getElementById('chkReferencia');
 const form = document.querySelector('#Agenda form');
 const inputNombre = document.getElementById('nombre');
 const inputTelefono = document.getElementById('telefono');
@@ -20,27 +21,13 @@ let idEditando = null;
 
 // funciones
 
-function actualizarFiltroReferencias(contactos) {
-  const referenciasUnicas = [...new Set(
-    contactos.map(c => c.referencia).filter(r => r)
-  )];
-
-  filtroReferencia.innerHTML = '<option value="">Todas las referencias</option>';
-
-  referenciasUnicas.forEach(referencia => {
-    const opcion = document.createElement('option');
-    opcion.value = referencia;
-    opcion.textContent = referencia;
-    filtroReferencia.appendChild(opcion);
-  });
-}
 
 function cargarContactos() {
   fetch(API_URL)
     .then(respuesta => respuesta.json())
     .then(contactos => {
       console.log('Contactos cargados:', contactos); 
-      actualizarFiltroReferencias(contactos);
+      
       todoslosContactos = contactos;
       dibujarContactos(contactos);
     })
@@ -181,19 +168,26 @@ btnCancelar.addEventListener('click', function () {
 
 function aplicarFiltros() {
   const texto = inputBuscar.value.trim().toLowerCase();
-  const referenciaElegida = filtroReferencia.value;
+  const buscarPorNombre = chkNombre.checked;
+  const buscarPorReferencia = chkReferencia.checked;
 
   const filtrados = todoslosContactos.filter(contacto => {
-    const coincideNombre = contacto.nombre.toLowerCase().includes(texto);
-    const coincideReferencia = referenciaElegida === '' || contacto.referencia === referenciaElegida;
-    return coincideNombre && coincideReferencia;
+    const nombre = (contacto.nombre || '').toLowerCase();
+    const referencia = (contacto.referencia || '').toLowerCase();
+
+    if (!buscarPorNombre && !buscarPorReferencia) return true;
+
+    const coincideNombre = buscarPorNombre && nombre.startsWith(texto);
+    const coincideReferencia = buscarPorReferencia && referencia.startsWith(texto);
+
+    return coincideNombre || coincideReferencia;
   });
 
   dibujarContactos(filtrados);
 }
 
 inputBuscar.addEventListener('input', aplicarFiltros);
-filtroReferencia.addEventListener('change', aplicarFiltros);
-
+chkNombre.addEventListener('change', aplicarFiltros);
+chkReferencia.addEventListener('change', aplicarFiltros);
 // INICIALIZAR
 document.addEventListener('DOMContentLoaded', cargarContactos);

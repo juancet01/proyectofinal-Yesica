@@ -33,7 +33,7 @@
 
                     <div class="campo">
                         <label for="gmail">Contacto</label>
-                        <input type="text" id="gmail">
+                        <input type="text" id="gmail" placeholder="tucontacto@">
                     </div>
 
                     <div class="campo">
@@ -50,10 +50,11 @@
                 </form>
 
         </div>
-        <input type="text" id="inputBuscar" placeholder="Buscar contacto por nombre"> 
-        <select id="filtroReferencia">
-            <option value="">todas las referencias</option>
-        </select>
+        <div id="buscadorContainer">
+             <input type="text" id="inputBuscar" placeholder="Buscar...">
+             <label><input type="checkbox" id="chkNombre" checked> Nombre</label>
+             <label><input type="checkbox" id="chkReferencia" checked> Referencia</label>
+        </div>
             
             <p id="contador"></p>
 
